@@ -64,3 +64,30 @@ function fetchNews(isSearching) {
       isLoading = false;
     });
 }
+
+function displayNoMoreNews() {
+  const newsContainer = document.getElementById("newsContainer");
+  newsContainer.innerHTML += "<p>No more news to load</p>";
+}
+
+window.onscroll = function () {
+  if (window.innerHeight + window.scrollY >= docuument.body.offsetHeight - 10) {
+    if (currentKeyword) {
+      fetchNews(true);
+    } else {
+      fetchNews(false);
+    }
+  }
+};
+
+document.getElementById("searchKeyword").addEventListener("input", function () {
+  currentPage = 1;
+  currentCategory = null;
+  currentKeyword = this.value;
+});
+
+document.getElementById("fetchCategory").addEventListener("click", function () {
+  currentPage = 1;
+  currentKeyword = null;
+  fetchNews(false);
+});
