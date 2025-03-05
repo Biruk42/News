@@ -1,5 +1,5 @@
 let currentPage = 1;
-let currentCategory = null;
+let currentCategory = "general"; // Default category
 let currentKeyword = null;
 let isLoading = false;
 let lastArticleCount = 0;
@@ -33,6 +33,7 @@ function fetchNews(isSearching) {
         articleWithImage.length === lastArticleCount
       ) {
         displayNoMoreNews();
+        isLoading = false;
         return;
       }
       lastArticleCount = articleWithImage.length;
@@ -84,10 +85,18 @@ document.getElementById("searchKeyword").addEventListener("input", function () {
   currentPage = 1;
   currentCategory = null;
   currentKeyword = this.value;
+  lastArticleCount = 0; // Reset lastArticleCount when changing the keyword
 });
 
 document.getElementById("fetchCategory").addEventListener("click", function () {
   currentPage = 1;
   currentKeyword = null;
+  currentCategory = document.getElementById("category").value;
+  lastArticleCount = 0; // Reset lastArticleCount when changing the category
+  fetchNews(false);
+});
+
+// Fetch news when the page loads
+document.addEventListener("DOMContentLoaded", function () {
   fetchNews(false);
 });
