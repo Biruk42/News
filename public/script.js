@@ -1,4 +1,3 @@
-const API_KEY = "API_KEY";
 let currentPage = 1;
 let currentCategory = null;
 let currentKeyword = null;
@@ -8,14 +7,15 @@ let lastArticleCount = 0;
 function fetchNews(isSearching) {
   if (isLoading) return;
   isLoading = true;
-  let url;
+  let url = `http://localhost:3000/news?page=${currentPage}`;
+
   if (isSearching) {
     const keyword = document.getElementById("searchKeyword").value;
-    url = `https://newsapi.org/v2/everything?q=${keyword}&apiKey=${API_KEY}&page=${currentPage}`;
+    url += `&keyword=${keyword}`;
   } else {
     const category =
       currentCategory || document.getElementById("category").value;
-    url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}&page=${currentPage}`;
+    url += `&category=${category}`;
   }
 
   fetch(url)
@@ -71,7 +71,7 @@ function displayNoMoreNews() {
 }
 
 window.onscroll = function () {
-  if (window.innerHeight + window.scrollY >= docuument.body.offsetHeight - 10) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10) {
     if (currentKeyword) {
       fetchNews(true);
     } else {
